@@ -1,32 +1,39 @@
+const STARTS_MINUS = /^-(.+)?$/g;
+const STARTS_ZERO = /^0+/g;
+const ENDS_DELIMITER = /^\d+\.$/g;
+const ONLY_ZERO = /^0+$/g;
+const NON_NUMBERS = /[^0-9]/g;
+const NUMBERS_WITHOUT_ZERO = /[1-9]/g;
+
 /**
  * Выполняет проверку, начинается ли строка со знака минуса.
  * @param {string} value Исходная строка.
  * @returns {boolean}
  */
-const startsMinus = value => /^-(.+)?$/g.test(value);
+const startsMinus = value => STARTS_MINUS.test(value);
 
 /**
  * Выполняет проверку, является ли числовой разделитель первым в строке.
  * @param {string} value Исходная строка.
  * @returns {boolean}
  */
-const firstDelimiter = value => /^\d+\.$/g.test(value);
+const firstDelimiter = value => ENDS_DELIMITER.test(value);
 
 /**
  * Удаляет из строки все символы не являющиеся числами.
  * @param {string} value Исходная строка.
  */
-const removeChars = value => value.replace(/[^0-9]/g, '');
+const removeChars = value => value.replace(NON_NUMBERS, '');
 
 /**
  * Исправляет неверную последовательность нулей в числе.
  * @param {string} value Исходная строка.
  */
 const fixNumber = value => {
-    if (/[1-9]/g.test(value)) {
-        return value.replace(/^0+/g, '');
+    if (NUMBERS_WITHOUT_ZERO.test(value)) {
+        return value.replace(STARTS_ZERO, '');
     } else {
-        return value.replace(/^0+$/g, '0');
+        return value.replace(ONLY_ZERO, '0');
     }
 };
 
